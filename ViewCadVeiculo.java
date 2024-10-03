@@ -1,3 +1,8 @@
+// Ricardo Rigo Antunes RA 1136661
+// Pedro Henrique Piovezan RA 1135911
+// Henrique Panisson Agostineto RA 1136301
+// Matheus Rodrigues Souza RA 1136389
+
 import java.util.List;
 import java.util.Scanner;
 
