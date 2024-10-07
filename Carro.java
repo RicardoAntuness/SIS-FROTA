@@ -8,6 +8,6 @@ public class Carro extends Veiculo {
 
     @Override
     public String toString() {
-        return "Carro [Marca: " + super.toString() + ", Número de Portas: " + numeroPortas + "]";
+        return super.toString() + String.format(", Número de portas: %d", numeroPortas);
     }
 }

@@ -3,7 +3,6 @@
 // Henrique Panisson Agostineto RA 1136301
 // Matheus Rodrigues Souza RA 1136389
 
-import java.util.List;
 import java.util.Scanner;
 
 public class ViewCadVeiculo {
@@ -83,9 +82,9 @@ public class ViewCadVeiculo {
     private static void cadastrarVeiculo() {
         try {
             String tipo = inputTexto("Digite o tipo do veículo (carro/moto): ").toLowerCase();
-
-            if (tipo.isBlank()) {
-                System.out.println("O tipo do veículo não pode estar em branco.");
+            String tipoErro = service.validarTipoVeiculo(tipo);
+            if (tipoErro != null) {
+                System.out.println(tipoErro);
                 aguardarEnter();
                 return;
             }
@@ -105,8 +104,9 @@ public class ViewCadVeiculo {
             }
 
             int ano = inputNumerico("Digite o ano do veículo: ");
-            if (ano < 1886 || ano > 2024) {
-                System.out.println("Ano inválido! O ano deve ser entre 1886 e 2024.");
+            String anoErro = service.validarAno(ano);
+            if (anoErro != null) {
+                System.out.println(anoErro);
                 aguardarEnter();
                 return;
             }
@@ -127,19 +127,16 @@ public class ViewCadVeiculo {
             Veiculo veiculo;
             if ("carro".equals(tipo)) {
                 int numeroPortas = inputNumerico("Digite o número de portas do carro: ");
-                if (numeroPortas <= 0) {
-                    System.out.println("O número de portas deve ser maior que 0.");
+                String portasErro = service.validarNumeroPortas(numeroPortas);
+                if (portasErro != null) {
+                    System.out.println(portasErro);
                     aguardarEnter();
                     return;
                 }
                 veiculo = new Carro(marca, modelo, ano, placa, numeroPortas);
-            } else if ("moto".equals(tipo)) {
+            } else {
                 boolean partidaEletrica = inputTexto("O veículo tem partida elétrica? (sim/não): ").equalsIgnoreCase("sim");
                 veiculo = new Moto(marca, modelo, ano, placa, partidaEletrica);
-            } else {
-                System.out.println("Tipo de veículo inválido.");
-                aguardarEnter();
-                return;
             }
 
             service.save(veiculo);
