@@ -1,8 +1,3 @@
-// Ricardo Rigo Antunes RA 1136661
-// Pedro Henrique Piovezan RA 1135911
-// Henrique Panisson Agostineto RA 1136301
-// Matheus Rodrigues Souza RA 1136389
-
 import java.util.Scanner;
 
 public class ViewCadVeiculo {
@@ -82,71 +77,26 @@ public class ViewCadVeiculo {
     private static void cadastrarVeiculo() {
         try {
             String tipo = inputTexto("Digite o tipo do veículo (carro/moto): ").toLowerCase();
+    
             String tipoErro = service.validarTipoVeiculo(tipo);
             if (tipoErro != null) {
-                System.out.println(tipoErro);
+                System.out.println(tipoErro);  
                 aguardarEnter();
                 return;
             }
-
+    
             String marca = inputTexto("Digite a marca do veículo: ");
-            if (marca.isBlank()) {
-                System.out.println("A marca do veículo não pode estar em branco.");
-                aguardarEnter();
-                return;
-            }
-
             String modelo = inputTexto("Digite o modelo do veículo: ");
-            if (modelo.isBlank()) {
-                System.out.println("O modelo do veículo não pode estar em branco.");
-                aguardarEnter();
-                return;
-            }
-
             int ano = inputNumerico("Digite o ano do veículo: ");
-            String anoErro = service.validarAno(ano);
-            if (anoErro != null) {
-                System.out.println(anoErro);
-                aguardarEnter();
-                return;
-            }
-
             String placa = inputTexto("Digite a placa do veículo: ");
-            if (placa.isBlank()) {
-                System.out.println("A placa do veículo não pode estar em branco.");
-                aguardarEnter();
-                return;
-            }
-
-            if (service.findByPlaca(placa) != null) {
-                System.out.println("Já existe um veículo cadastrado com essa placa.");
-                aguardarEnter();
-                return;
-            }
-
-            Veiculo veiculo;
-            if ("carro".equals(tipo)) {
-                int numeroPortas = inputNumerico("Digite o número de portas do carro: ");
-                String portasErro = service.validarNumeroPortas(numeroPortas);
-                if (portasErro != null) {
-                    System.out.println(portasErro);
-                    aguardarEnter();
-                    return;
-                }
-                veiculo = new Carro(marca, modelo, ano, placa, numeroPortas);
-            } else {
-                boolean partidaEletrica = inputTexto("O veículo tem partida elétrica? (sim/não): ").equalsIgnoreCase("sim");
-                veiculo = new Moto(marca, modelo, ano, placa, partidaEletrica);
-            }
-
-            service.save(veiculo);
-            System.out.println("Veículo cadastrado com sucesso!");
+    
+            String resultado = service.cadastrarVeiculo(tipo, marca, modelo, ano, placa);
+            System.out.println(resultado);
         } catch (Exception e) {
-            System.out.println("NÃO FOI POSSÍVEL CADASTRAR O VEÍCULO.");
-            System.out.println("Erro: " + e.getMessage());
+            System.out.println("Erro ao cadastrar o veículo: " + e.getMessage());
         }
         aguardarEnter();
-    }
+    }    
 
     private static void listarVeiculos() {
         limparTela();
@@ -168,8 +118,7 @@ public class ViewCadVeiculo {
                 System.out.println("Veículo não encontrado.");
             }
         } catch (Exception e) {
-            System.out.println("NÃO FOI POSSÍVEL ENCONTRAR O VEÍCULO.");
-            System.out.println("Erro: " + e.getMessage());
+            System.out.println("Erro ao pesquisar o veículo: " + e.getMessage());
         }
         aguardarEnter();
     }
@@ -177,16 +126,10 @@ public class ViewCadVeiculo {
     private static void removerVeiculo() {
         try {
             String placa = inputTexto("Digite a placa do veículo que deseja remover: ");
-            Veiculo veiculo = service.findByPlaca(placa);
-            if (veiculo != null) {
-                service.remove(veiculo);
-                System.out.println("Veículo removido com sucesso!");
-            } else {
-                System.out.println("Veículo não encontrado.");
-            }
+            String resultado = service.removerVeiculo(placa);
+            System.out.println(resultado);
         } catch (Exception e) {
-            System.out.println("NÃO FOI POSSÍVEL REMOVER O VEÍCULO.");
-            System.out.println("Erro: " + e.getMessage());
+            System.out.println("Erro ao remover o veículo: " + e.getMessage());
         }
         aguardarEnter();
     }
